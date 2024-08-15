@@ -11,13 +11,19 @@ const StatsHeader = () =>
 
 const Stats = ({feedback}) => {
   const [good, neutral, bad] = feedback
-
+  const sum = good.value + neutral.value + bad.value
+  const average = (good.value + bad.value * -1) / sum 
+  const ratio = good.value / sum * 100
+  
   return (
     <div>
       <StatsHeader/>
       <StatDisplay name={good.name} value={good.value}/>
       <StatDisplay name={neutral.name} value={neutral.value}/>
       <StatDisplay name={bad.name} value={bad.value}/>
+      <StatDisplay name="all" value={sum}/>
+      <StatDisplay name="average" value={average}/>
+      <StatDisplay name="Positive" value={ratio + "%"}/>
     </div>
   )
 }
