@@ -9,28 +9,38 @@ const Button = (props) =>
 const StatsHeader = () => 
   <h1>statistics</h1>
 
+const StatisticLine = ({name, value}) => 
+  <div>{name} {value}</div>
+
+
 const Stats = ({feedback}) => {
   const [good, neutral, bad] = feedback
-  const sum = good.value + neutral.value + bad.value
-  const average = (good.value + bad.value * -1) / sum 
-  const ratio = good.value / sum * 100
+  const sum = good + neutral + bad
+
+  if (sum === 0) {
+    return (
+      <div>
+        <StatsHeader/>
+        <div>No feedback given</div>
+      </div>
+    )
+  }
+  
+  const average = (good + bad * -1) / sum 
+  const ratio = good / sum * 100
   
   return (
     <div>
       <StatsHeader/>
-      <StatDisplay name={good.name} value={good.value}/>
-      <StatDisplay name={neutral.name} value={neutral.value}/>
-      <StatDisplay name={bad.name} value={bad.value}/>
-      <StatDisplay name="all" value={sum}/>
-      <StatDisplay name="average" value={average}/>
-      <StatDisplay name="Positive" value={ratio + "%"}/>
+      <StatisticLine name="good" value={good}/>
+      <StatisticLine name="neutral" value={neutral}/>
+      <StatisticLine name="bad" value={bad}/>
+      <StatisticLine name="all" value={sum}/>
+      <StatisticLine name="average" value={average}/>
+      <StatisticLine name="Positive" value={ratio + "%"}/>
     </div>
   )
 }
-
-const StatDisplay = ({name, value}) => 
-  <div>{name} {value}</div>
-
 
 const App = () => {
 
@@ -38,11 +48,7 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const feedback = [
-    {name: "good", value: good}, 
-    {name: "neutral", value: neutral}, 
-    {name: "bad", value: bad}
-  ]
+  const feedback = [good, neutral, bad]
 
 
   return (
