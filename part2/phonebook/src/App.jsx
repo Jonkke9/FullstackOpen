@@ -1,14 +1,19 @@
 import { useState } from "react";
 
-const PhoneBookForm = ({addPerson, onChange, newName}) => {
+const PhoneBookForm = ({
+  addPerson,
+  onNameChange,
+  onNumChange,
+  newName,
+  newNum,
+}) => {
   return (
     <form onSubmit={addPerson}>
       <div>
-        name: 
-        <input
-          value={newName}
-          onChange={onChange}
-        />
+        name: <input value={newName} onChange={onNameChange} />
+      </div>
+      <div>
+        number: <input value={newNum} onChange={onNumChange} />
       </div>
       <div>
         <button type="submit">add</button>
@@ -23,7 +28,9 @@ const NumberList = ({ persons }) => {
       <h2>Numbers</h2>
       <ul>
         {persons.map((person) => (
-          <li key={person.name}>{person.name}</li>
+          <li key={person.name}>
+            {person.name} {person.number}
+          </li>
         ))}
       </ul>
     </div>
@@ -31,31 +38,49 @@ const NumberList = ({ persons }) => {
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("New name...");
+  const [newNum, setNewNum] = useState("New number...");
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ])
 
   const addPerson = (event) => {
-    event.preventDefault()
-    const personExists = persons.some(person => person.name === newName);
+    event.preventDefault();
+    const personExists = persons.some((person) => person.name === newName);
 
     if (personExists) {
-      console.log("Person by the name" + newName + "already exists in the phonebook.");
+      alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(persons.concat({ name: newName}));
+      setPersons(persons.concat({ name: newName, number: newNum}));
       setNewName("");
+      setNewNum("");
     }
-  }
+  };
 
-  const onChange = (event) => {
+  const onNameChange = (event) => {
     console.log(event.target.value);
     setNewName(event.target.value);
-  }
+  };
+
+  const onNumChange = (event) => {
+    console.log(event.target.value);
+    setNum(event.target.value);
+  };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <PhoneBookForm addPerson={addPerson} newName={newName} onChange={onChange}/>
-      <NumberList persons={persons}/>
+      <PhoneBookForm
+        addPerson={addPerson}
+        onNameChange={onNameChange}
+        onNumChange={onNumChange}
+        newName={newName}
+        newNum={newNum}
+      />
+      <NumberList persons={persons} />
     </div>
   );
 };
