@@ -25,7 +25,6 @@ const PhoneBookForm = ({
 const NumberList = ({ persons }) => {
   return (
     <div>
-      <h2>Numbers</h2>
       <ul>
         {persons.map((person) => (
           <li key={person.name}>
@@ -40,12 +39,17 @@ const NumberList = ({ persons }) => {
 const App = () => {
   const [newName, setNewName] = useState("New name...");
   const [newNum, setNewNum] = useState("New number...");
+  const [filter, setFilter] = useState("");
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+    { name: "Arto Hellas", number: "040-123456" },
+    { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
+  ]);
+
+  const filteredPersons = persons.filter((person) =>
+    person.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -54,7 +58,7 @@ const App = () => {
     if (personExists) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(persons.concat({ name: newName, number: newNum}));
+      setPersons(persons.concat({ name: newName, number: newNum }));
       setNewName("");
       setNewNum("");
     }
@@ -67,12 +71,20 @@ const App = () => {
 
   const onNumChange = (event) => {
     console.log(event.target.value);
-    setNum(event.target.value);
+    setNewNum(event.target.value);
+  };
+
+  const onFilterChange = (event) => {
+    console.log(event.target.value);
+    setFilter(event.target.value);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      filter <input value={filter} onChange={onFilterChange}/>
+      <h2>add a new</h2>
+      
       <PhoneBookForm
         addPerson={addPerson}
         onNameChange={onNameChange}
@@ -80,7 +92,8 @@ const App = () => {
         newName={newName}
         newNum={newNum}
       />
-      <NumberList persons={persons} />
+      <h2>Numbers</h2>
+      <NumberList persons={filteredPersons} />
     </div>
   );
 };
