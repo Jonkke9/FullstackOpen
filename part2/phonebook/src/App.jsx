@@ -36,6 +36,18 @@ const NumberList = ({ persons }) => {
   );
 };
 
+const Filter = ({filter, onFilterChange}) => {
+  return (
+    <div>
+      filter 
+      <input 
+        value={filter} 
+        onChange={onFilterChange}
+      />
+    </div>
+  )
+}
+
 const App = () => {
   const [newName, setNewName] = useState("New name...");
   const [newNum, setNewNum] = useState("New number...");
@@ -82,9 +94,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      filter <input value={filter} onChange={onFilterChange}/>
+      <Filter filter={filter} onFilterChange={onFilterChange}/>
       <h2>add a new</h2>
-      
       <PhoneBookForm
         addPerson={addPerson}
         onNameChange={onNameChange}
