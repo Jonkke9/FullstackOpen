@@ -1,27 +1,9 @@
 import { useState, useEffect} from "react";
 import axios from "axios"
 
-const PhoneBookForm = ({
-  addPerson,
-  onNameChange,
-  onNumChange,
-  newName,
-  newNum,
-}) => {
-  return (
-    <form onSubmit={addPerson}>
-      <div>
-        name: <input value={newName} onChange={onNameChange} />
-      </div>
-      <div>
-        number: <input value={newNum} onChange={onNumChange} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  );
-};
+import PhoneBookForm from "./components/PhoneBookForm"
+import personsService from "./services/persons";
+
 
 const NumberList = ({ persons }) => {
   return (
@@ -56,11 +38,9 @@ const App = () => {
   const [persons, setPersons] = useState([]);
 
   useEffect(()=> {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
-      })
+    personsService.getAll().then(data => {
+      setPersons(data)
+    })
   }, [])
 
   const filteredPersons = persons.filter((person) =>
@@ -74,9 +54,11 @@ const App = () => {
     if (personExists) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(persons.concat({ name: newName, number: newNum }));
-      setNewName("");
-      setNewNum("");
+      personsService.add({name: newName, number: newNum}).then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName("");
+        setNewNum("");
+      })
     }
   };
 
@@ -99,7 +81,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Filter filter={filter} onFilterChange={onFilterChange}/>
-      <h2>add a new</h2>
+    
       <PhoneBookForm
         addPerson={addPerson}
         onNameChange={onNameChange}
