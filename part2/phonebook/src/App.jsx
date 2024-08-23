@@ -2,22 +2,9 @@ import { useState, useEffect} from "react";
 import axios from "axios"
 
 import PhoneBookForm from "./components/PhoneBookForm"
+import PersonList from "./components/PersonList";
 import personsService from "./services/persons";
 
-
-const NumberList = ({ persons }) => {
-  return (
-    <div>
-      <ul>
-        {persons.map((person) => (
-          <li key={person.name}>
-            {person.name} {person.number}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 const Filter = ({filter, onFilterChange}) => {
   return (
@@ -60,23 +47,25 @@ const App = () => {
         setNewNum("");
       })
     }
-  };
+  }
 
-  const onNameChange = (event) => {
-    console.log(event.target.value);
-    setNewName(event.target.value);
-  };
+  const handleDelete = (person) => {
+    if (confirm(`Delete ${person.name}?`)) {
+      personsService.remove(person.id).then(returnedPerson => {
+        setPersons(persons.filter(p => p.id !== returnedPerson.id));
+      })
+    }
+  }
 
-  const onNumChange = (event) => {
-    console.log(event.target.value);
-    setNewNum(event.target.value);
-  };
+  const onNameChange = (event) => 
+    setNewName(event.target.value)
+  
+  const onNumChange = (event) => 
+    setNewNum(event.target.value)
 
-  const onFilterChange = (event) => {
-    console.log(event.target.value);
-    setFilter(event.target.value);
-  };
-
+  const onFilterChange = (event) => 
+    setFilter(event.target.value)
+  
   return (
     <div>
       <h2>Phonebook</h2>
@@ -89,8 +78,7 @@ const App = () => {
         newName={newName}
         newNum={newNum}
       />
-      <h2>Numbers</h2>
-      <NumberList persons={filteredPersons} />
+      <PersonList persons={filteredPersons} handleDelete={handleDelete}/>
     </div>
   );
 };

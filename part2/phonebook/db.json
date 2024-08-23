@@ -1,27 +1,17 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": "1"
+      "id": "7394",
+      "name": "aku ankka",
+      "number": "112"
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": "2"
+      "id": "0bc7",
+      "name": "",
+      "number": ""
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": "4"
-    },
-    {
-      "id": "e246",
+      "id": "e35c",
       "name": "New name...",
       "number": "New number..."
     }
