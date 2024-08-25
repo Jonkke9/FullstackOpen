@@ -4,15 +4,7 @@ import axios from "axios";
 import PhoneBookForm from "./components/PhoneBookForm";
 import PersonList from "./components/PersonList";
 import personsService from "./services/persons";
-
-const Filter = ({ filter, onFilterChange }) => {
-  return (
-    <div>
-      filter
-      <input value={filter} onChange={onFilterChange} />
-    </div>
-  );
-};
+import Filter from "./components/FilterForm"
 
 const App = () => {
   const [newName, setNewName] = useState("New name...");
@@ -42,7 +34,7 @@ const App = () => {
       ) {
         const personToUpdate = persons.find(
           (person) => person.name === newName
-        );
+        )
         personsService
           .update({ ...personToUpdate, number: newNum })
           .then((returnedPerson) => {
@@ -68,27 +60,25 @@ const App = () => {
 
   const handleDelete = (person) => {
     if (confirm(`Delete ${person.name}?`)) {
-      personsService.remove(person.id).then((returnedPerson) => {
-        setPersons(persons.filter((p) => p.id !== returnedPerson.id));
-      });
+      personsService
+        .remove(person.id)
+        .then((returnedPerson) => {
+          setPersons(persons.filter((p) => p.id !== returnedPerson.id));
+        })
+        .catch(() => {
+          alert(`${person.name} has already been deleted from the server`);
+        });
     }
   };
-
-  const onNameChange = (event) => setNewName(event.target.value);
-
-  const onNumChange = (event) => setNewNum(event.target.value);
-
-  const onFilterChange = (event) => setFilter(event.target.value);
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} onFilterChange={onFilterChange} />
-
+      <Filter filter={filter} onFilterChange={(event) => setFilter(event.target.value)} />
       <PhoneBookForm
         addPerson={addPerson}
-        onNameChange={onNameChange}
-        onNumChange={onNumChange}
+        onNameChange={(event) => setNewName(event.target.value)}
+        onNumChange={(event) => setNewNum(event.target.value)}
         newName={newName}
         newNum={newNum}
       />

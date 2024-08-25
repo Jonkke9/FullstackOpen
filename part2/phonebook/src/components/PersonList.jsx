@@ -8,12 +8,11 @@ const DeleteButton = ({handleDelete}) => {
 const Person = ({ person, handleDelete }) => {
   return (
     <li>
-      {person.name} 
-      {person.number}
+      {person.name} {person.number}
       <DeleteButton handleDelete={()=> handleDelete(person)}/>
     </li>
-  );
-};
+  )
+}
 
 const PersonList = ({ persons, handleDelete}) => {
   return (
@@ -25,7 +24,7 @@ const PersonList = ({ persons, handleDelete}) => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default PersonList;
+export default PersonList
