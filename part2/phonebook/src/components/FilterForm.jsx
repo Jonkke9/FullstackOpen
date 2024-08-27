@@ -7,4 +7,4 @@ const Filter = ({ filter, onFilterChange }) => {
     )
 }
 
-export default filter
+export default Filter

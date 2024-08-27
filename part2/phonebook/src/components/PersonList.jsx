@@ -20,7 +20,7 @@ const PersonList = ({ persons, handleDelete}) => {
       <h2>Numbers</h2>
       <ul>
         {persons.map((person) => (
-          <Person key={person.name} person={person} handleDelete={handleDelete}/>
+          <Person key={person.id} person={person} handleDelete={handleDelete}/>
         ))}
       </ul>
     </div>
