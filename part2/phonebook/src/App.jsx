@@ -81,7 +81,9 @@ const App = () => {
             setNewNum("");
           })
           .catch((error) => {
-            sendError(`${personToUpdate.name} has already been deleted from the server.`)
+            sendError(
+              `${personToUpdate.name} has already been deleted from the server.`
+            );
           });
       }
     } else {
@@ -93,9 +95,9 @@ const App = () => {
           setNewName("");
           setNewNum("");
         })
-        .catch(error => {
-          console.log(error)
-          sendError(`Something went wrong when trying to add ${newName}`)
+        .catch((error) => {
+          console.log(error);
+          sendError(`Something went wrong when trying to add ${newName}`);
         });
     }
   };
@@ -108,7 +110,7 @@ const App = () => {
           setPersons(persons.filter((p) => p.id !== returnedPerson.id));
         })
         .catch((error) => {
-          sendError(`${person.name} has already been deleted from the server.`)
+          sendError(`${person.name} has already been deleted from the server.`);
         });
     }
   };
