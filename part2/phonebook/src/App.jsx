@@ -18,7 +18,7 @@ const Error = ({ message }) => {
     return null;
   }
 
-  return <div className="notification">{message}</div>;
+  return <div className="error">{message}</div>;
 };
 
 const App = () => {
@@ -43,6 +43,11 @@ const App = () => {
   const sendNotification = (message) => {
     setNotificationMessage(message);
     setTimeout(() => setNotificationMessage(null), 3000);
+  };
+
+  const sendError = (message) => {
+    setErrorMessage(message);
+    setTimeout(() => setErrorMessage(null), 3000);
   };
 
   const filteredPersons = persons.filter((person) =>
@@ -75,7 +80,9 @@ const App = () => {
             setNewName("");
             setNewNum("");
           })
-          .catch((error) => {});
+          .catch((error) => {
+            sendError(`${personToUpdate.name} has already been deleted from the server.`)
+          });
       }
     } else {
       personsService
@@ -85,6 +92,10 @@ const App = () => {
           sendNotification(`Added ${returnedPerson.name}.`);
           setNewName("");
           setNewNum("");
+        })
+        .catch(error => {
+          console.log(error)
+          sendError(`Something went wrong when trying to add ${newName}`)
         });
     }
   };
@@ -96,15 +107,17 @@ const App = () => {
         .then((returnedPerson) => {
           setPersons(persons.filter((p) => p.id !== returnedPerson.id));
         })
-        .catch((error) => {});
+        .catch((error) => {
+          sendError(`${person.name} has already been deleted from the server.`)
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
       <Notification message={notification} />
+      <Error message={errorMessage} />
       <Filter
         filter={filter}
         onFilterChange={(event) => setFilter(event.target.value)}
